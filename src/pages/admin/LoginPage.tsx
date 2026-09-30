@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
 export function LoginPage() {
-  const { configured, loading, isStaff, signIn, usingLocalBackend } = useAuth();
+  const { configured, loading, isStaff, signIn } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,11 +39,6 @@ export function LoginPage() {
         {!configured ? (
           <div className="alert alert--warn">
             Add host login or Supabase env vars in GitHub Actions secrets (see README).
-          </div>
-        ) : usingLocalBackend ? (
-          <div className="alert alert--info">
-            Using device storage until Supabase is connected. Sign in with your host email
-            and password.
           </div>
         ) : null}
 
