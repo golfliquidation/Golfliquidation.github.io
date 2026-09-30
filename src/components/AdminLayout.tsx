@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 const links = [
   { to: "/admin", label: "Dashboard", end: true },
   { to: "/admin/listings", label: "Listings" },
-  { to: "/admin/inventory", label: "Inventory CRM" },
+  { to: "/admin/inventory", label: "Inventory" },
 ];
 
 export function AdminLayout() {
@@ -37,7 +37,7 @@ export function AdminLayout() {
             {link.label}
           </NavLink>
         ))}
-        <NavLink to="/">View site</NavLink>
+        <NavLink to="/">Site</NavLink>
       </nav>
       <main className="admin-main">
         <Outlet />
