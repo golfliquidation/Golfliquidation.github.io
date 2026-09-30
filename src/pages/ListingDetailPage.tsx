@@ -75,7 +75,7 @@ export function ListingDetailPage() {
                     onClick={() => setActivePhoto(idx)}
                     style={{
                       outline:
-                        idx === activePhoto ? "2px solid var(--green-deep)" : undefined,
+                        idx === activePhoto ? "2px solid var(--accent)" : undefined,
                     }}
                   >
                     <img src={url} alt="" />

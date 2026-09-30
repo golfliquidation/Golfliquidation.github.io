@@ -3,14 +3,14 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
 export function LoginPage() {
-  const { configured, loading, session, isStaff, signIn } = useAuth();
+  const { configured, loading, isStaff, signIn, usingLocalBackend } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  if (!loading && session && isStaff) {
+  if (!loading && isStaff) {
     return <Navigate to="/admin" replace />;
   }
 
@@ -38,8 +38,12 @@ export function LoginPage() {
       <main className="admin-main">
         {!configured ? (
           <div className="alert alert--warn">
-            Supabase is not configured. Copy <code>.env.example</code> to{" "}
-            <code>.env.local</code> and add your project URL and anon key.
+            Add host login or Supabase env vars in GitHub Actions secrets (see README).
+          </div>
+        ) : usingLocalBackend ? (
+          <div className="alert alert--info">
+            Using device storage until Supabase is connected. Sign in with your host email
+            and password.
           </div>
         ) : null}
 

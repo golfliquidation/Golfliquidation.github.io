@@ -1,3 +1,11 @@
+import {
+  localDelete,
+  localGetBySlug,
+  localListAll,
+  localListPublished,
+  localUploadPhoto,
+  localUpsert,
+} from "@/lib/local-backend";
 import { PHOTO_BUCKET, supabase } from "@/lib/supabase";
 import type { InventoryItem, InventoryItemInsert } from "@/types/inventory";
 
@@ -5,11 +13,12 @@ function mapRow(row: Record<string, unknown>): InventoryItem {
   return {
     ...(row as unknown as InventoryItem),
     photo_urls: Array.isArray(row.photo_urls) ? (row.photo_urls as string[]) : [],
+    quantity: typeof row.quantity === "number" ? row.quantity : 1,
   };
 }
 
 export async function listPublishedItems(): Promise<InventoryItem[]> {
-  if (!supabase) return [];
+  if (!supabase) return localListPublished();
   const { data, error } = await supabase
     .from("inventory_items")
     .select("*")
@@ -21,7 +30,7 @@ export async function listPublishedItems(): Promise<InventoryItem[]> {
 }
 
 export async function getItemBySlug(slug: string): Promise<InventoryItem | null> {
-  if (!supabase) return null;
+  if (!supabase) return localGetBySlug(slug);
   const { data, error } = await supabase
     .from("inventory_items")
     .select("*")
@@ -33,7 +42,7 @@ export async function getItemBySlug(slug: string): Promise<InventoryItem | null>
 }
 
 export async function listAllItems(): Promise<InventoryItem[]> {
-  if (!supabase) return [];
+  if (!supabase) return localListAll();
   const { data, error } = await supabase
     .from("inventory_items")
     .select("*")
@@ -45,7 +54,7 @@ export async function listAllItems(): Promise<InventoryItem[]> {
 export async function upsertItem(
   item: Partial<InventoryItemInsert> & { id?: string },
 ): Promise<InventoryItem> {
-  if (!supabase) throw new Error("Supabase not configured");
+  if (!supabase) return localUpsert(item);
   const payload = {
     ...item,
     photo_urls: item.photo_urls ?? [],
@@ -71,16 +80,16 @@ export async function upsertItem(
 }
 
 export async function deleteItem(id: string): Promise<void> {
-  if (!supabase) throw new Error("Supabase not configured");
+  if (!supabase) {
+    localDelete(id);
+    return;
+  }
   const { error } = await supabase.from("inventory_items").delete().eq("id", id);
   if (error) throw error;
 }
 
-export async function uploadListingPhoto(
-  file: File,
-  itemId: string,
-): Promise<string> {
-  if (!supabase) throw new Error("Supabase not configured");
+export async function uploadListingPhoto(file: File, itemId: string): Promise<string> {
+  if (!supabase) return localUploadPhoto(file, itemId);
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
   const path = `${itemId}/${crypto.randomUUID()}.${ext}`;
   const { error: uploadError } = await supabase.storage

@@ -32,16 +32,23 @@ npm run dev
 
 Pushes to `main` run **Deploy GitHub Pages** (`.github/workflows/deploy.yml`).
 
-In the repo **Settings → Secrets and variables → Actions**, add:
+In the repo **Settings → Secrets and variables → Actions**, add either:
+
+**Option A — Supabase (cloud sync, recommended)**
 
 | Secret | Value |
 |--------|--------|
 | `VITE_SUPABASE_URL` | Project URL (Settings → API) |
 | `VITE_SUPABASE_ANON_KEY` | `anon` public key |
 
-**Settings → Pages → Build and deployment** should use **GitHub Actions** as the source.
+**Option B — Host login only (inventory stored in each browser)**
 
-Until those secrets are set, the site shows a banner that the backend is not connected; shop inventory and admin auth need them at build time.
+| Secret | Value |
+|--------|--------|
+| `VITE_HOST_EMAIL` | Email you use to sign in at `/admin/login` |
+| `VITE_HOST_PASSWORD` | Strong password (baked into the build; change via secrets + redeploy) |
+
+**Settings → Pages → Build and deployment** should use **GitHub Actions** as the source.
 
 ## Inventory CRM
 

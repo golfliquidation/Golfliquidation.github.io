@@ -8,7 +8,15 @@ import {
   type ReactNode,
 } from "react";
 import type { Session, User } from "@supabase/supabase-js";
-import { isSupabaseConfigured, supabase } from "@/lib/supabase";
+import {
+  backendSignIn,
+  backendSignOut,
+  isBackendConfigured,
+  isLocalHostConfigured,
+  isLocalSessionActive,
+  isSupabaseConfigured,
+} from "@/lib/backend";
+import { supabase } from "@/lib/supabase";
 
 type Profile = {
   id: string;
@@ -23,6 +31,7 @@ type AuthContextValue = {
   loading: boolean;
   isStaff: boolean;
   configured: boolean;
+  usingLocalBackend: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 };
@@ -43,6 +52,7 @@ async function fetchProfile(userId: string): Promise<Profile | null> {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [localActive, setLocalActive] = useState(isLocalSessionActive());
   const [loading, setLoading] = useState(isSupabaseConfigured);
 
   const refreshProfile = useCallback(async (userId: string | undefined) => {
@@ -56,6 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!supabase) {
       setLoading(false);
+      setLocalActive(isLocalSessionActive());
       return;
     }
 
@@ -75,19 +86,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [refreshProfile]);
 
   const signIn = useCallback(async (email: string, password: string) => {
-    if (!supabase) {
-      return { error: "Backend not configured. Add Supabase env vars." };
+    const result = await backendSignIn(email, password);
+    if (!result.error && isLocalHostConfigured && !supabase) {
+      setLocalActive(true);
     }
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error?.message ?? null };
+    return result;
   }, []);
 
   const signOut = useCallback(async () => {
-    if (supabase) await supabase.auth.signOut();
+    await backendSignOut();
     setProfile(null);
+    setLocalActive(false);
   }, []);
 
-  const isStaff = profile?.role === "admin" || profile?.role === "host";
+  const usingLocalBackend = isLocalHostConfigured && !isSupabaseConfigured;
+  const isStaff =
+    profile?.role === "admin" ||
+    profile?.role === "host" ||
+    (usingLocalBackend && localActive);
 
   const value = useMemo(
     () => ({
@@ -96,11 +112,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       profile,
       loading,
       isStaff,
-      configured: isSupabaseConfigured,
+      configured: isBackendConfigured,
+      usingLocalBackend,
       signIn,
       signOut,
     }),
-    [session, profile, loading, isStaff, signIn, signOut],
+    [session, profile, loading, isStaff, usingLocalBackend, signIn, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

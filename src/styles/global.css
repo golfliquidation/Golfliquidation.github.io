@@ -1,17 +1,30 @@
 :root {
-  --green-deep: #1a4d2e;
-  --green-mid: #2d6a4f;
-  --cream: #faf7f2;
-  --cream-dark: #ebe4d8;
-  --gold: #c9a227;
-  --gold-light: #e8c547;
-  --ink: #1c1c1a;
-  --muted: #5c5c56;
+  /* Midnight retail + Texas copper accent */
+  --brand-dark: #0f172a;
+  --brand-mid: #1e293b;
+  --brand-light: #334155;
+  --accent: #ea580c;
+  --accent-soft: #fb923c;
+  --accent-on: #ffffff;
+  --surface: #ffffff;
+  --surface-muted: #f1f5f9;
+  --surface-border: #cbd5e1;
+  --ink: #0f172a;
+  --muted: #64748b;
   --white: #ffffff;
-  --danger: #b42318;
+  --danger: #dc2626;
+
+  /* Legacy aliases (components reference these) */
+  --green-deep: var(--brand-dark);
+  --green-mid: var(--brand-mid);
+  --cream: var(--surface-muted);
+  --cream-dark: var(--surface-border);
+  --gold: var(--accent);
+  --gold-light: var(--accent-soft);
+
   --radius: 12px;
   --radius-lg: 18px;
-  --shadow: 0 8px 24px rgba(26, 77, 46, 0.12);
+  --shadow: 0 10px 28px rgba(15, 23, 42, 0.1);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --nav-height: 64px;
   font-family:
@@ -22,7 +35,7 @@
     sans-serif;
   line-height: 1.5;
   color: var(--ink);
-  background: var(--cream);
+  background: var(--surface-muted);
 }
 
 *,
@@ -38,7 +51,7 @@ html {
 body {
   margin: 0;
   min-height: 100dvh;
-  background: var(--cream);
+  background: var(--surface-muted);
 }
 
 a {
@@ -75,8 +88,8 @@ textarea {
 }
 
 .site-header {
-  background: var(--green-deep);
-  color: var(--cream);
+  background: var(--brand-dark);
+  color: var(--white);
   padding: 0.85rem 0;
   position: sticky;
   top: 0;
@@ -108,6 +121,7 @@ textarea {
   opacity: 0.85;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+  color: var(--accent-soft);
 }
 
 .header-link {
@@ -124,7 +138,7 @@ textarea {
   bottom: 0;
   z-index: 50;
   background: var(--white);
-  border-top: 1px solid var(--cream-dark);
+  border-top: 1px solid var(--surface-border);
   padding: 0.35rem 0.5rem calc(0.35rem + var(--safe-bottom));
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -146,8 +160,8 @@ textarea {
 }
 
 .bottom-nav a.active {
-  color: var(--green-deep);
-  background: rgba(26, 77, 46, 0.08);
+  color: var(--accent);
+  background: rgba(234, 88, 12, 0.1);
 }
 
 .bottom-nav__icon {
@@ -156,8 +170,13 @@ textarea {
 }
 
 .hero {
-  background: linear-gradient(165deg, var(--green-deep) 0%, var(--green-mid) 55%, #3d8b6e 100%);
-  color: var(--cream);
+  background: linear-gradient(
+    155deg,
+    var(--brand-dark) 0%,
+    var(--brand-mid) 45%,
+    #475569 100%
+  );
+  color: var(--white);
   padding: 2rem 0 2.5rem;
 }
 
@@ -165,8 +184,8 @@ textarea {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(234, 88, 12, 0.2);
+  border: 1px solid rgba(251, 146, 60, 0.45);
   border-radius: 999px;
   padding: 0.35rem 0.75rem;
   font-size: 0.75rem;
@@ -212,26 +231,26 @@ textarea {
 }
 
 .btn--primary {
-  background: var(--gold);
-  color: var(--ink);
-  box-shadow: 0 4px 14px rgba(201, 162, 39, 0.35);
+  background: var(--accent);
+  color: var(--accent-on);
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);
 }
 
 .btn--secondary {
   background: transparent;
-  color: var(--cream);
+  color: var(--white);
   border: 2px solid rgba(255, 255, 255, 0.45);
 }
 
 .btn--dark {
-  background: var(--green-deep);
-  color: var(--cream);
+  background: var(--brand-mid);
+  color: var(--white);
 }
 
 .btn--ghost {
   background: var(--white);
-  color: var(--green-deep);
-  border: 1px solid var(--cream-dark);
+  color: var(--brand-dark);
+  border: 1px solid var(--surface-border);
 }
 
 .btn--danger {
@@ -269,14 +288,14 @@ textarea {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow);
-  border: 1px solid var(--cream-dark);
+  border: 1px solid var(--surface-border);
   display: flex;
   flex-direction: column;
 }
 
 .product-card__img {
   aspect-ratio: 1;
-  background: var(--cream-dark);
+  background: var(--surface-muted);
   object-fit: cover;
   width: 100%;
 }
@@ -290,7 +309,7 @@ textarea {
 }
 
 .product-card__price {
-  color: var(--green-deep);
+  color: var(--accent);
   font-weight: 800;
   font-size: 1.05rem;
 }
@@ -306,8 +325,8 @@ textarea {
   border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 700;
-  background: rgba(26, 77, 46, 0.1);
-  color: var(--green-deep);
+  background: rgba(234, 88, 12, 0.12);
+  color: var(--accent);
 }
 
 .feature-grid {
@@ -319,7 +338,7 @@ textarea {
   background: var(--white);
   border-radius: var(--radius);
   padding: 1rem;
-  border: 1px solid var(--cream-dark);
+  border: 1px solid var(--surface-border);
 }
 
 .feature-card h3 {
@@ -337,7 +356,7 @@ textarea {
   background: var(--white);
   border-radius: var(--radius-lg);
   padding: 1.25rem;
-  border: 1px solid var(--cream-dark);
+  border: 1px solid var(--surface-border);
   display: grid;
   gap: 0.85rem;
 }
@@ -359,7 +378,7 @@ textarea {
   min-height: 48px;
   padding: 0.65rem 0.75rem;
   border-radius: var(--radius);
-  border: 1px solid var(--cream-dark);
+  border: 1px solid var(--surface-border);
   background: var(--white);
 }
 
@@ -375,14 +394,20 @@ textarea {
 }
 
 .alert--warn {
-  background: #fff8e6;
-  border: 1px solid #f0d48a;
-  color: #6b4e00;
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  color: #9a3412;
+}
+
+.alert--info {
+  background: #eff6ff;
+  border: 1px solid #93c5fd;
+  color: #1e40af;
 }
 
 .alert--error {
-  background: #fef3f2;
-  border: 1px solid #fecdca;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
   color: var(--danger);
 }
 
@@ -402,13 +427,13 @@ textarea {
   aspect-ratio: 4/3;
   object-fit: cover;
   border-radius: var(--radius-lg);
-  background: var(--cream-dark);
+  background: var(--surface-muted);
 }
 
 .detail-price {
   font-size: 1.75rem;
   font-weight: 800;
-  color: var(--green-deep);
+  color: var(--accent);
   margin: 0.5rem 0;
 }
 
@@ -419,8 +444,8 @@ textarea {
 }
 
 .admin-top {
-  background: var(--green-deep);
-  color: var(--cream);
+  background: var(--brand-dark);
+  color: var(--white);
   padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
@@ -434,7 +459,7 @@ textarea {
   overflow-x: auto;
   padding: 0.65rem 1rem;
   background: var(--white);
-  border-bottom: 1px solid var(--cream-dark);
+  border-bottom: 1px solid var(--surface-border);
   -webkit-overflow-scrolling: touch;
 }
 
@@ -449,9 +474,9 @@ textarea {
 }
 
 .admin-nav a.active {
-  background: rgba(26, 77, 46, 0.1);
-  color: var(--green-deep);
-  border-color: rgba(26, 77, 46, 0.15);
+  background: rgba(234, 88, 12, 0.1);
+  color: var(--accent);
+  border-color: rgba(234, 88, 12, 0.2);
 }
 
 .admin-main {
@@ -471,7 +496,7 @@ textarea {
   background: var(--white);
   border-radius: var(--radius);
   padding: 0.85rem;
-  border: 1px solid var(--cream-dark);
+  border: 1px solid var(--surface-border);
 }
 
 .stat-card__label {
@@ -482,12 +507,12 @@ textarea {
 .stat-card__value {
   font-size: 1.35rem;
   font-weight: 800;
-  color: var(--green-deep);
+  color: var(--brand-dark);
 }
 
 .table-wrap {
   overflow-x: auto;
-  border: 1px solid var(--cream-dark);
+  border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   background: var(--white);
 }
@@ -502,12 +527,12 @@ textarea {
 .data-table td {
   padding: 0.65rem 0.75rem;
   text-align: left;
-  border-bottom: 1px solid var(--cream-dark);
+  border-bottom: 1px solid var(--surface-border);
   vertical-align: top;
 }
 
 .data-table th {
-  background: var(--cream);
+  background: var(--surface-muted);
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -521,7 +546,7 @@ textarea {
 
 .crm-card {
   background: var(--white);
-  border: 1px solid var(--cream-dark);
+  border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   padding: 0.85rem;
   display: grid;
@@ -546,7 +571,7 @@ textarea {
   aspect-ratio: 1;
   border-radius: var(--radius);
   overflow: hidden;
-  background: var(--cream-dark);
+  background: var(--surface-muted);
 }
 
 .photo-preview img {
