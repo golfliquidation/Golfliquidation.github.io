@@ -12,7 +12,7 @@ export function ContactPage() {
           <p>
             <strong>Email</strong>
             <br />
-            <a href="mailto:hello@golfliquidation.com">hello@golfliquidation.com</a>
+            <a href="mailto:golfliquidation@gmail.com">golfliquidation@gmail.com</a>
           </p>
           <p>
             <strong>Based in</strong>
