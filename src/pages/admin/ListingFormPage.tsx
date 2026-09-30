@@ -171,6 +171,19 @@ export function ListingFormPage() {
           />
         </div>
         <div className="field">
+          <label htmlFor="quantity">Quantity on hand</label>
+          <input
+            id="quantity"
+            type="number"
+            min={0}
+            step={1}
+            value={form.quantity}
+            onChange={(e) =>
+              updateField("quantity", Math.max(0, parseInt(e.target.value || "0", 10)))
+            }
+          />
+        </div>
+        <div className="field">
           <label htmlFor="category">Category</label>
           <select
             id="category"

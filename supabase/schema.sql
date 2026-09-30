@@ -51,6 +51,7 @@ create table public.profiles (
 create table public.inventory_items (
   id uuid primary key default gen_random_uuid(),
   sku text,
+  quantity integer not null default 1,
   title text not null,
   description text,
   category public.item_category not null default 'other',
@@ -74,6 +75,9 @@ create table public.inventory_items (
 
 create unique index inventory_items_slug_key on public.inventory_items (slug)
 where slug is not null;
+
+create unique index inventory_items_sku_key on public.inventory_items (sku)
+where sku is not null;
 
 create or replace function public.is_staff()
 returns boolean

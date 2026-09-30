@@ -152,6 +152,8 @@ export function InventoryCrmPage() {
                   <span className="pill">{STATUS_LABELS[item.status]}</span>
                 </div>
                 <div style={{ fontSize: "0.85rem" }}>
+                  Qty {item.quantity ?? 1}
+                  {" · "}
                   List {formatPrice(item.price_cents)}
                   {item.cost_cents != null ? (
                     <>

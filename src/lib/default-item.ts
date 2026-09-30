@@ -7,6 +7,7 @@ export function createEmptyItem(
   const title = partial?.title ?? "New item";
   return {
     sku: null,
+    quantity: 1,
     title,
     description: null,
     category: "other",

@@ -38,6 +38,7 @@ export type ItemCategory =
 export interface InventoryItem {
   id: string;
   sku: string | null;
+  quantity: number;
   title: string;
   description: string | null;
   category: ItemCategory;
