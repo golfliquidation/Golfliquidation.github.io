@@ -28,8 +28,6 @@ jobs:
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-          VITE_HOST_EMAIL: ${{ secrets.VITE_HOST_EMAIL }}
-          VITE_HOST_PASSWORD: ${{ secrets.VITE_HOST_PASSWORD }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

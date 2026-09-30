@@ -78,3 +78,10 @@ update public.inventory_items
 set cost_cents = 5000
 where sku in ('SHAFT-VENTUS-TR-7X-2026', 'SHAFT-VENTUS-TR-6X-2026')
   and cost_cents is null;
+
+update public.inventory_items set slug = 'ventus-tr-7x-2026-uncut'
+where sku = 'SHAFT-VENTUS-TR-7X-2026' and slug is null;
+update public.inventory_items set slug = 'ventus-tr-6x-2026-uncut'
+where sku = 'SHAFT-VENTUS-TR-6X-2026' and slug is null;
+update public.inventory_items set slug = 'kbs-130x-4pw-half-over'
+where sku = 'SHAFT-KBS-130X-4PW-HALFOVER' and slug is null;

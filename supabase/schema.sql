@@ -122,14 +122,22 @@ create policy "Profiles: staff read all"
   on public.profiles for select
   using (public.is_staff());
 
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.profiles p
+    where p.id = auth.uid() and p.role = 'admin'
+  );
+$$;
+
 create policy "Profiles: admin update roles"
   on public.profiles for update
-  using (
-    exists (
-      select 1 from public.profiles p
-      where p.id = auth.uid() and p.role = 'admin'
-    )
-  );
+  using (public.is_admin());
 
 create policy "Inventory: public read published"
   on public.inventory_items for select
