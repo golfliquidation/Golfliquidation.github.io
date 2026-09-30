@@ -6,7 +6,7 @@ import {
   CATEGORY_LABELS,
   CONDITION_LABELS,
   SOURCE_LABELS,
-  formatPrice,
+  formatListPrice,
 } from "@/types/inventory";
 
 export function ListingDetailPage() {
@@ -90,7 +90,10 @@ export function ListingDetailPage() {
           {CATEGORY_LABELS[item.category]}
         </p>
         <h1 style={{ margin: "0.35rem 0 0" }}>{item.title}</h1>
-        <p className="detail-price">{formatPrice(item.price_cents)}</p>
+        <p className="detail-price">{formatListPrice(item.price_cents)}</p>
+        {item.quantity > 1 ? (
+          <p style={{ margin: 0, fontWeight: 600 }}>{item.quantity} available</p>
+        ) : null}
         <p style={{ color: "var(--muted)" }}>
           {item.brand ? `${item.brand} · ` : ""}
           {CONDITION_LABELS[item.condition]}
@@ -100,9 +103,13 @@ export function ListingDetailPage() {
         ) : null}
         <p style={{ fontSize: "0.85rem", color: "var(--muted)", marginTop: "1.25rem" }}>
           Sourced via {SOURCE_LABELS[item.source_type]}
-          {item.source_detail ? ` — ${item.source_detail}` : ""}
+          {item.source_detail ? `: ${item.source_detail}` : ""}
         </p>
-        <Link to="/contact" className="btn btn--primary btn--block" style={{ marginTop: "1.5rem" }}>
+        <Link
+          to={`/contact?item=${encodeURIComponent(item.title)}`}
+          className="btn btn--primary btn--block"
+          style={{ marginTop: "1.5rem" }}
+        >
           Ask about this item
         </Link>
       </div>

@@ -6,6 +6,7 @@ import {
   localUploadPhoto,
   localUpsert,
 } from "@/lib/local-backend";
+import { resizeImage } from "@/lib/image";
 import { PHOTO_BUCKET, supabase } from "@/lib/supabase";
 import type { InventoryItem, InventoryItemInsert } from "@/types/inventory";
 
@@ -88,8 +89,9 @@ export async function deleteItem(id: string): Promise<void> {
   if (error) throw error;
 }
 
-export async function uploadListingPhoto(file: File, itemId: string): Promise<string> {
-  if (!supabase) return localUploadPhoto(file, itemId);
+export async function uploadListingPhoto(original: File, itemId: string): Promise<string> {
+  if (!supabase) return localUploadPhoto(await resizeImage(original, 1200, 0.78), itemId);
+  const file = await resizeImage(original);
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
   const path = `${itemId}/${crypto.randomUUID()}.${ext}`;
   const { error: uploadError } = await supabase.storage

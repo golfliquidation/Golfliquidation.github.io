@@ -5,6 +5,7 @@ import type { InventoryItem, InventoryStatus } from "@/types/inventory";
 import {
   SOURCE_LABELS,
   STATUS_LABELS,
+  formatListPrice,
   formatPrice,
   type InventorySource,
 } from "@/types/inventory";
@@ -56,6 +57,21 @@ export function InventoryCrmPage() {
     for (const item of items) map[item.status] += 1;
     return map;
   }, [items]);
+
+  async function sellOne(item: InventoryItem) {
+    const qty = item.quantity ?? 1;
+    if (qty > 1) {
+      setError(null);
+      try {
+        await upsertItem({ ...item, quantity: qty - 1 });
+        await refresh();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Update failed");
+      }
+      return;
+    }
+    await advanceStatus(item, "sold");
+  }
 
   async function advanceStatus(item: InventoryItem, status: InventoryStatus) {
     setError(null);
@@ -154,7 +170,7 @@ export function InventoryCrmPage() {
                 <div style={{ fontSize: "0.85rem" }}>
                   Qty {item.quantity ?? 1}
                   {" · "}
-                  List {formatPrice(item.price_cents)}
+                  List {formatListPrice(item.price_cents)}
                   {item.cost_cents != null ? (
                     <>
                       {" "}
@@ -185,9 +201,9 @@ export function InventoryCrmPage() {
                     <button
                       type="button"
                       className="btn btn--primary"
-                      onClick={() => void advanceStatus(item, "sold")}
+                      onClick={() => void sellOne(item)}
                     >
-                      Mark sold
+                      {(item.quantity ?? 1) > 1 ? "Sold 1" : "Mark sold"}
                     </button>
                   ) : null}
                 </div>

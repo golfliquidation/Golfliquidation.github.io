@@ -106,6 +106,10 @@ export const CONDITION_LABELS: Record<ItemCondition, string> = {
   as_is: "As-is",
 };
 
+export function formatListPrice(cents: number): string {
+  return cents > 0 ? formatPrice(cents) : "Contact for price";
+}
+
 export function formatPrice(cents: number): string {
   return new Intl.NumberFormat("en-US", {
     style: "currency",

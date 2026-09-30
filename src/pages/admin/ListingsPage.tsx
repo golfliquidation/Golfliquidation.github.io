@@ -36,6 +36,7 @@ export function ListingsPage() {
             <thead>
               <tr>
                 <th>Item</th>
+                <th>Qty</th>
                 <th>Price</th>
                 <th>Status</th>
                 <th>Live</th>
@@ -54,7 +55,8 @@ export function ListingsPage() {
                       </div>
                     ) : null}
                   </td>
-                  <td>{formatPrice(item.price_cents)}</td>
+                  <td>{item.quantity ?? 1}</td>
+                  <td>{item.price_cents > 0 ? formatPrice(item.price_cents) : "—"}</td>
                   <td>{STATUS_LABELS[item.status]}</td>
                   <td>{item.published ? "Yes" : "No"}</td>
                 </tr>

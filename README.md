@@ -45,7 +45,7 @@ In the repo **Settings → Secrets and variables → Actions**, add either:
 
 | Secret | Value |
 |--------|--------|
-| `VITE_HOST_EMAIL` | Email you use to sign in at `/admin/login` |
+| `VITE_HOST_EMAIL` | Host sign-in email (e.g. `golfliquidation@gmail.com`) |
 | `VITE_HOST_PASSWORD` | Strong password (baked into the build; change via secrets + redeploy) |
 
 **Settings → Pages → Build and deployment** should use **GitHub Actions** as the source.

@@ -3,7 +3,7 @@ import type { InventoryItem } from "@/types/inventory";
 import {
   CATEGORY_LABELS,
   CONDITION_LABELS,
-  formatPrice,
+  formatListPrice,
 } from "@/types/inventory";
 
 type Props = { item: InventoryItem };
@@ -21,7 +21,7 @@ export function ProductCard({ item }: Props) {
       <div className="product-card__body">
         <span className="pill">{CATEGORY_LABELS[item.category]}</span>
         <strong>{item.title}</strong>
-        <span className="product-card__price">{formatPrice(item.price_cents)}</span>
+        <span className="product-card__price">{formatListPrice(item.price_cents)}</span>
         <span className="product-card__meta">
           {item.brand ? `${item.brand} · ` : ""}
           {CONDITION_LABELS[item.condition]}

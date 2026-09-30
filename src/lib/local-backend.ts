@@ -21,7 +21,13 @@ function readItems(): InventoryItem[] {
 }
 
 function writeItems(items: InventoryItem[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  } catch {
+    throw new Error(
+      "Browser storage is full. Remove some photos, or connect cloud storage to add more.",
+    );
+  }
 }
 
 function seedIfEmpty() {

@@ -20,6 +20,15 @@ import {
   type ItemCondition,
 } from "@/types/inventory";
 
+function centsToText(cents: number | null): string {
+  return cents ? (cents / 100).toFixed(2) : "";
+}
+
+function textToCents(text: string): number | null {
+  const value = parseFloat(text.replace(/[$,\s]/g, ""));
+  return Number.isFinite(value) && value >= 0 ? Math.round(value * 100) : null;
+}
+
 export function ListingFormPage() {
   const { id } = useParams<{ id: string }>();
   const isNew = id === "new" || !id;
@@ -29,7 +38,10 @@ export function ListingFormPage() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [itemId, setItemId] = useState<string | undefined>(isNew ? undefined : id);
+  const [priceText, setPriceText] = useState("");
+  const [costText, setCostText] = useState("");
 
   useEffect(() => {
     if (isNew || !id) return;
@@ -39,6 +51,8 @@ export function ListingFormPage() {
         if (!found) throw new Error("Item not found");
         setForm(found);
         setItemId(found.id);
+        setPriceText(centsToText(found.price_cents));
+        setCostText(centsToText(found.cost_cents));
       })
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false));
@@ -67,10 +81,12 @@ export function ListingFormPage() {
     e.preventDefault();
     setSaving(true);
     setError(null);
+    setNotice(null);
     try {
       const saved = await upsertItem({ ...form, id: itemId });
       setItemId(saved.id);
       setForm(saved);
+      setNotice(saved.published ? "Saved. This item is live in the shop." : "Saved.");
       if (isNew) navigate(`/admin/listings/${saved.id}`, { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed");
@@ -81,17 +97,18 @@ export function ListingFormPage() {
 
   async function handlePhotos(files: FileList | null) {
     if (!files?.length) return;
-    let currentId = itemId;
-    if (!currentId) {
-      const draft = await upsertItem(form);
-      currentId = draft.id;
-      setItemId(draft.id);
-      setForm(draft);
-      navigate(`/admin/listings/${draft.id}`, { replace: true });
-    }
     setUploading(true);
     setError(null);
+    setNotice(null);
     try {
+      let currentId = itemId;
+      if (!currentId) {
+        const draft = await upsertItem(form);
+        currentId = draft.id;
+        setItemId(draft.id);
+        setForm(draft);
+        navigate(`/admin/listings/${draft.id}`, { replace: true });
+      }
       const urls: string[] = [];
       for (const file of Array.from(files)) {
         urls.push(await uploadListingPhoto(file, currentId));
@@ -126,7 +143,6 @@ export function ListingFormPage() {
         ← All listings
       </Link>
       <h1 style={{ marginTop: "0.5rem" }}>{isNew ? "New listing" : "Edit listing"}</h1>
-      {error ? <div className="alert alert--error">{error}</div> : null}
 
       <form className="form-stack" onSubmit={(e) => void handleSave(e)}>
         <div className="field">
@@ -215,30 +231,25 @@ export function ListingFormPage() {
           <label htmlFor="price">List price (USD)</label>
           <input
             id="price"
-            type="number"
-            min={0}
-            step={0.01}
-            value={(form.price_cents / 100).toFixed(2)}
-            onChange={(e) =>
-              updateField("price_cents", Math.round(parseFloat(e.target.value || "0") * 100))
-            }
-            required
+            inputMode="decimal"
+            placeholder="Leave blank for “Contact for price”"
+            value={priceText}
+            onChange={(e) => {
+              setPriceText(e.target.value);
+              updateField("price_cents", textToCents(e.target.value) ?? 0);
+            }}
           />
         </div>
         <div className="field">
-          <label htmlFor="cost">Cost (USD)</label>
+          <label htmlFor="cost">Your cost (USD, private)</label>
           <input
             id="cost"
-            type="number"
-            min={0}
-            step={0.01}
-            value={form.cost_cents != null ? (form.cost_cents / 100).toFixed(2) : ""}
-            onChange={(e) =>
-              updateField(
-                "cost_cents",
-                e.target.value ? Math.round(parseFloat(e.target.value) * 100) : null,
-              )
-            }
+            inputMode="decimal"
+            value={costText}
+            onChange={(e) => {
+              setCostText(e.target.value);
+              updateField("cost_cents", textToCents(e.target.value));
+            }}
           />
         </div>
         <div className="field">
@@ -305,8 +316,10 @@ export function ListingFormPage() {
             type="file"
             accept="image/*"
             multiple
-            capture="environment"
-            onChange={(e) => void handlePhotos(e.target.files)}
+            onChange={(e) => {
+              void handlePhotos(e.target.files);
+              e.target.value = "";
+            }}
             disabled={uploading}
           />
           {uploading ? <p style={{ fontSize: "0.85rem" }}>Uploading…</p> : null}
@@ -324,11 +337,13 @@ export function ListingFormPage() {
           ) : null}
         </div>
 
+        {error ? <div className="alert alert--error">{error}</div> : null}
+        {notice ? <div className="alert alert--info">{notice}</div> : null}
         <div className="form-actions">
-          <button type="submit" className="btn btn--primary" disabled={saving}>
+          <button type="submit" className="btn btn--primary" disabled={saving || uploading}>
             {saving ? "Saving…" : "Save"}
           </button>
-          {itemId && form.slug ? (
+          {itemId && form.slug && form.published ? (
             <Link to={`/shop/${form.slug}`} className="btn btn--ghost">
               Preview
             </Link>

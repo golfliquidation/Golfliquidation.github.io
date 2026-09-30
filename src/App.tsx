@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AdminLayout } from "@/components/AdminLayout";
 import { PublicLayout } from "@/components/PublicLayout";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import { StaffRoute } from "@/components/StaffRoute";
 import { AboutPage } from "@/pages/AboutPage";
 import { ContactPage } from "@/pages/ContactPage";
@@ -16,6 +17,7 @@ import { LoginPage } from "@/pages/admin/LoginPage";
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route element={<PublicLayout />}>
           <Route index element={<HomePage />} />
