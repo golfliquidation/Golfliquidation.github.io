@@ -36,7 +36,7 @@ function seedIfEmpty() {
   const seeds: InventoryItemInsert[] = [
     {
       sku: "SHAFT-VENTUS-TR-7X-2026",
-      title: "2026 Fujikura Ventus TR VeloCore+ 7X — Uncut",
+      title: "2026 Fujikura Ventus TR VeloCore+ 7X Uncut",
       description: "New. Fujikura Ventus TR with VeloCore+. 7X flex, uncut length.",
       category: "accessories",
       condition: "new",
@@ -57,7 +57,7 @@ function seedIfEmpty() {
     },
     {
       sku: "SHAFT-VENTUS-TR-6X-2026",
-      title: "2026 Fujikura Ventus TR VeloCore+ 6X — Uncut",
+      title: "2026 Fujikura Ventus TR VeloCore+ 6X Uncut",
       description: "New. Fujikura Ventus TR with VeloCore+. 6X flex, uncut length.",
       category: "accessories",
       condition: "new",
@@ -78,7 +78,7 @@ function seedIfEmpty() {
     },
     {
       sku: "SHAFT-KBS-130X-4PW-HALFOVER",
-      title: 'KBS 130X 1/2" Over — 4-PW Shaft Set',
+      title: 'KBS 130X 1/2" Over, 4-PW Shaft Set',
       description:
         "New KBS 130X (130g) iron shafts, half inch over length. 4 iron through pitching wedge (7 shafts).",
       category: "accessories",
@@ -111,6 +111,15 @@ function seedIfEmpty() {
 
 export function initLocalStore() {
   seedIfEmpty();
+  const items = readItems();
+  if (items.some((i) => i.title.includes("—"))) {
+    writeItems(
+      items.map((i) => ({
+        ...i,
+        title: i.title.replace(/ — Uncut/g, " Uncut").replace(/\s*—\s*/g, ", "),
+      })),
+    );
+  }
 }
 
 export function localListAll(): InventoryItem[] {

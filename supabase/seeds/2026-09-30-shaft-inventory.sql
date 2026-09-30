@@ -1,4 +1,4 @@
--- Golf Liquidation — shaft inventory (run in Supabase SQL Editor)
+-- Golf Liquidation: shaft inventory (run in Supabase SQL Editor)
 -- Safe to re-run: uses SKUs with ON CONFLICT if you add a unique index on sku.
 
 alter table public.inventory_items
@@ -24,7 +24,7 @@ insert into public.inventory_items (
 values
   (
     'SHAFT-VENTUS-TR-7X-2026',
-    '2026 Fujikura Ventus TR VeloCore+ 7X — Uncut',
+    '2026 Fujikura Ventus TR VeloCore+ 7X Uncut',
     'New. Fujikura Ventus TR with VeloCore+. 7X flex, uncut length.',
     'accessories',
     'new',
@@ -37,7 +37,7 @@ values
   ),
   (
     'SHAFT-VENTUS-TR-6X-2026',
-    '2026 Fujikura Ventus TR VeloCore+ 6X — Uncut',
+    '2026 Fujikura Ventus TR VeloCore+ 6X Uncut',
     'New. Fujikura Ventus TR with VeloCore+. 6X flex, uncut length.',
     'accessories',
     'new',
@@ -50,7 +50,7 @@ values
   ),
   (
     'SHAFT-KBS-130X-4PW-HALFOVER',
-    'KBS 130X 1/2" Over — 4-PW Shaft Set',
+    'KBS 130X 1/2" Over, 4-PW Shaft Set',
     'New KBS 130X (130g) iron shafts, half inch over length. 4 iron through pitching wedge (7 shafts).',
     'accessories',
     'new',

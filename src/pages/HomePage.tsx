@@ -22,7 +22,7 @@ export function HomePage() {
           <div className="hero__badge">🇺🇸 Texan owned &amp; operated · Since 2020</div>
           <h1>Liquidated golf gear. Pro-shop quality. Yard-sale prices.</h1>
           <p>
-            We buy out closing pro shops, fitting studios, and wholesaler closeouts — then
+            We buy out closing pro shops, fitting studios, and wholesaler closeouts, then
             pass the savings to Texas golfers and beyond.
           </p>
           <div className="btn-row">

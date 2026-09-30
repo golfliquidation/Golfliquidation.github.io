@@ -34,14 +34,14 @@ Pushes to `main` run **Deploy GitHub Pages** (`.github/workflows/deploy.yml`).
 
 In the repo **Settings → Secrets and variables → Actions**, add either:
 
-**Option A — Supabase (cloud sync, recommended)**
+**Option A: Supabase (cloud sync, recommended)**
 
 | Secret | Value |
 |--------|--------|
 | `VITE_SUPABASE_URL` | Project URL (Settings → API) |
 | `VITE_SUPABASE_ANON_KEY` | `anon` public key |
 
-**Option B — Host login only (inventory stored in each browser)**
+**Option B: Host login only (inventory stored in each browser)**
 
 | Secret | Value |
 |--------|--------|

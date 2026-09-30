@@ -1,4 +1,4 @@
--- Golf Liquidation — Supabase schema (run in SQL editor)
+-- Golf Liquidation: Supabase schema (run in SQL editor)
 
 create extension if not exists "pgcrypto";
 

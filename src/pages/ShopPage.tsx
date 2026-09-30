@@ -33,7 +33,7 @@ export function ShopPage() {
     <section className="section">
       <div className="container">
         <h1 className="section__title">Shop</h1>
-        <p className="section__sub">Everything listed is ready to move — first come, first
+        <p className="section__sub">Everything listed is ready to move, first come, first
           served.</p>
 
         <div className="form-stack" style={{ marginBottom: "1rem" }}>
