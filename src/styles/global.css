@@ -300,6 +300,23 @@ textarea {
   width: 100%;
 }
 
+.img-placeholder {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.img-placeholder::after {
+  content: "Photo coming soon";
+}
+
+.product-card .pill {
+  align-self: flex-start;
+}
+
 .product-card__body {
   padding: 0.75rem;
   display: flex;
@@ -359,6 +376,11 @@ textarea {
   border: 1px solid var(--surface-border);
   display: grid;
   gap: 0.85rem;
+}
+
+.contact-card a {
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .field {

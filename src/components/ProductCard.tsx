@@ -16,7 +16,7 @@ export function ProductCard({ item }: Props) {
       {image ? (
         <img src={image} alt={item.title} className="product-card__img" loading="lazy" />
       ) : (
-        <div className="product-card__img" aria-hidden />
+        <div className="product-card__img img-placeholder" aria-hidden />
       )}
       <div className="product-card__body">
         <span className="pill">{CATEGORY_LABELS[item.category]}</span>

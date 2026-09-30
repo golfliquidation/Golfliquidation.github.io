@@ -62,7 +62,7 @@ export function ListingDetailPage() {
               className="detail-gallery__main"
             />
           ) : (
-            <div className="detail-gallery__main" aria-hidden />
+            <div className="detail-gallery__main img-placeholder" aria-hidden />
           )}
           {photos.length > 1 ? (
             <div className="photo-preview-grid">
