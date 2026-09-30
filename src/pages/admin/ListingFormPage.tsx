@@ -13,6 +13,7 @@ import {
   CONDITION_LABELS,
   SOURCE_LABELS,
   STATUS_LABELS,
+  formatPrice,
   slugify,
   type InventorySource,
   type InventoryStatus,
@@ -228,7 +229,7 @@ export function ListingFormPage() {
           </select>
         </div>
         <div className="field">
-          <label htmlFor="price">List price (USD)</label>
+          <label htmlFor="price">List price per unit (USD)</label>
           <input
             id="price"
             inputMode="decimal"
@@ -241,7 +242,12 @@ export function ListingFormPage() {
           />
         </div>
         <div className="field">
-          <label htmlFor="cost">Your cost (USD, private)</label>
+          <label htmlFor="cost">
+            Your cost per unit (USD, private)
+            {form.cost_cents && form.quantity > 1
+              ? ` · ${formatPrice(form.cost_cents * form.quantity)} for all ${form.quantity}`
+              : ""}
+          </label>
           <input
             id="cost"
             inputMode="decimal"

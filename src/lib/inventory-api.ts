@@ -124,6 +124,6 @@ export async function getCrmStats(): Promise<CrmStats> {
     sold: items.filter((i) => i.status === "sold").length,
     inventoryValueCents: active
       .filter((i) => i.status !== "sold")
-      .reduce((sum, i) => sum + (i.cost_cents ?? 0), 0),
+      .reduce((sum, i) => sum + (i.cost_cents ?? 0) * (i.quantity ?? 1), 0),
   };
 }

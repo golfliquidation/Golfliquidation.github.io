@@ -72,3 +72,9 @@ on conflict (sku) where sku is not null do update set
   quantity = excluded.quantity,
   notes = excluded.notes,
   updated_at = now();
+
+-- Unit cost (per shaft), not per lot
+update public.inventory_items
+set cost_cents = 5000
+where sku in ('SHAFT-VENTUS-TR-7X-2026', 'SHAFT-VENTUS-TR-6X-2026')
+  and cost_cents is null;

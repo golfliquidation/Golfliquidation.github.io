@@ -44,7 +44,7 @@ function seedIfEmpty() {
       source_type: "wholesaler",
       source_detail: null,
       acquisition_date: null,
-      cost_cents: null,
+      cost_cents: 5000,
       price_cents: 0,
       status: "in_stock",
       published: false,
@@ -65,7 +65,7 @@ function seedIfEmpty() {
       source_type: "wholesaler",
       source_detail: null,
       acquisition_date: null,
-      cost_cents: null,
+      cost_cents: 5000,
       price_cents: 0,
       status: "in_stock",
       published: false,
@@ -112,12 +112,23 @@ function seedIfEmpty() {
 export function initLocalStore() {
   seedIfEmpty();
   const items = readItems();
-  if (items.some((i) => i.title.includes("—"))) {
+  const needsFix = (i: InventoryItem) =>
+    i.title.includes("—") ||
+    (i.sku?.startsWith("SHAFT-VENTUS-TR-") === true && i.cost_cents == null);
+  if (items.some(needsFix)) {
     writeItems(
-      items.map((i) => ({
-        ...i,
-        title: i.title.replace(/ — Uncut/g, " Uncut").replace(/\s*—\s*/g, ", "),
-      })),
+      items.map((i) =>
+        needsFix(i)
+          ? {
+              ...i,
+              title: i.title.replace(/ — Uncut/g, " Uncut").replace(/\s*—\s*/g, ", "),
+              cost_cents:
+                i.sku?.startsWith("SHAFT-VENTUS-TR-") && i.cost_cents == null
+                  ? 5000
+                  : i.cost_cents,
+            }
+          : i,
+      ),
     );
   }
 }

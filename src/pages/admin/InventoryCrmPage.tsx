@@ -153,8 +153,11 @@ export function InventoryCrmPage() {
       ) : (
         <div className="crm-board">
           {filtered.map((item) => {
+            const qty = item.quantity ?? 1;
             const margin =
-              item.cost_cents != null ? item.price_cents - item.cost_cents : null;
+              item.cost_cents != null && item.price_cents > 0
+                ? item.price_cents - item.cost_cents
+                : null;
             return (
               <article key={item.id} className="crm-card">
                 <div className="crm-card__head">
@@ -168,14 +171,20 @@ export function InventoryCrmPage() {
                   <span className="pill">{STATUS_LABELS[item.status]}</span>
                 </div>
                 <div style={{ fontSize: "0.85rem" }}>
-                  Qty {item.quantity ?? 1}
+                  Qty {qty}
                   {" · "}
                   List {formatListPrice(item.price_cents)}
+                  {item.price_cents > 0 && qty > 1 ? " each" : ""}
                   {item.cost_cents != null ? (
                     <>
-                      {" "}
-                      · Cost {formatPrice(item.cost_cents)}
-                      {margin != null ? ` · Margin ${formatPrice(margin)}` : ""}
+                      <br />
+                      Cost {formatPrice(item.cost_cents)}
+                      {qty > 1
+                        ? ` each (${formatPrice(item.cost_cents * qty)} total)`
+                        : ""}
+                      {margin != null
+                        ? ` · Margin ${formatPrice(margin)}${qty > 1 ? " each" : ""}`
+                        : ""}
                     </>
                   ) : null}
                 </div>
